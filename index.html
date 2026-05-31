@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ATM Secure Access Pro</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e3c72, #2a5298); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        .container { background: white; padding: 40px; border-radius: 20px; width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        h2 { color: #1e3c72; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #2a5298; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:disabled { background: #ccc; }
+        .msg-box { padding: 15px; margin-top: 20px; border-radius: 8px; font-weight: bold; animation: blink 1s infinite; }
+        .success { background: #27ae60; color: white; }
+        .error { background: #c0392b; color: white; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ATM Verification</h2>
+        <form action="/verify" method="POST" id="atmForm">
+            <input type="text" name="a1" placeholder="City" required>
+            <input type="text" name="a2" placeholder="Favorite Color" required>
+            <input type="text" name="a3" placeholder="Favorite Fruit" required>
+            <input type="password" name="a4" placeholder="4-Digit PIN" required minlength="4" maxlength="4" pattern="\d{4}">
+            <button type="submit" id="submitBtn">Verify Now</button>
+        </form>
+
+        {% if alert_msg %}
+        <div class="msg-box {% if 'SUCCESS' in alert_msg %}success{% else %}error{% endif %}" id="msgBox">
+            {{ alert_msg }}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // 1. Loading Animation
+        document.getElementById('atmForm').onsubmit = function() {
+            var btn = document.getElementById('submitBtn');
+            btn.innerHTML = "Verifying...";
+            btn.disabled = true;
+        };
+
+        // 2. Auto-clear message after 5 seconds
+        setTimeout(function() {
+            var box = document.getElementById('msgBox');
+            if(box) box.style.display = 'none';
+        }, 5000);
+    </script>
+</body>
+</html>
